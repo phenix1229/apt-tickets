@@ -12,13 +12,13 @@ export interface User {
     userStatus: UserStatus;
 }
 
-enum Department {
+export enum Department {
     PLUMBING = "PLUMBING",
     ELECTRICAL = "ELECTRICAL",
     STRUCTURAL = "STRUCTURAL"
 }
 
-enum UserStatus {
+export enum UserStatus {
     ACTIVE = "ACTIVE",
     INACTIVE = "INACTIVE"
 }
