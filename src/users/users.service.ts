@@ -11,41 +11,17 @@ export class UsersService {
     async createUser(createUserDto: CreateUserDto): Promise<User> {
         new this.userModel(createUserDto).save();
         return createUserDto;
-        // return user.save();
-        // {
-            // isAdmin,
-            // isStaff,
-            // firstName,
-            // lastName,
-            // phoneNumber,
-            // cellNumber,
-            // email,
-            // userStatus,
-            // unit,
-            // department
-
-        // } = createUserDto;
     }
 
-    //     const user: User = {
-    //         isAdmin,
-    //         isStaff,
-    //         firstName,
-    //         lastName,
-    //         phoneNumber,
-    //         cellNumber,
-    //         email,
-    //         userStatus: UserStatus.ACTIVE,
-    //         unit,
-    //         department
-    //     };
-    //     return user;
-    // }
-
-    getAllUsers() {
+    async getAllUsers() {
+        return this.userModel.find();
     }
 
-    getUserById() {
-        
+    getUserById(email: string) {
+        return this.userModel.find( {email} );
+    }
+
+    updateUser(email: string, updateUserDto: CreateUserDto){
+        return this.userModel.updateOne({email}, {$set: {...updateUserDto}})
     }
 }
