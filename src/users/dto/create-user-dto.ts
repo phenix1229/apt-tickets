@@ -1,7 +1,6 @@
-import { UserStatus, Department } from "../user.model";
+import { UserStatus, Department } from "../../schemas/user.schema";
 
 export class CreateUserDto {
-    id: string;
     isAdmin: boolean;
     isStaff: boolean;
     firstName: string;
@@ -9,7 +8,7 @@ export class CreateUserDto {
     phoneNumber: string;
     cellNumber: string;
     email: string;
-    userStatus: UserStatus;
+    userStatus: UserStatus.ACTIVE;
     unit?: string;
     department?: Department;
 }

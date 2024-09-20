@@ -1,45 +1,51 @@
 import { Injectable } from '@nestjs/common';
-import { User, UserStatus} from './user.model';
+import { User, UserDocument} from '../schemas/user.schema';
 import { CreateUserDto } from './dto/create-user-dto';
-import { v4 as uuid } from 'uuid';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class UsersService {
-    private users: User[] = [];
+    constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
 
-    createUser(createUserDto: CreateUserDto): User {
-        const {
-            id,
-            isAdmin,
-            isStaff,
-            firstName,
-            lastName,
-            phoneNumber,
-            cellNumber,
-            email,
-            userStatus,
-            unit,
-            department
-        } = createUserDto;
+    async createUser(createUserDto: CreateUserDto): Promise<User> {
+        new this.userModel(createUserDto).save();
+        return createUserDto;
+        // return user.save();
+        // {
+            // isAdmin,
+            // isStaff,
+            // firstName,
+            // lastName,
+            // phoneNumber,
+            // cellNumber,
+            // email,
+            // userStatus,
+            // unit,
+            // department
 
-        const user: User = {
-            id: uuid(),
-            isAdmin,
-            isStaff,
-            firstName,
-            lastName,
-            phoneNumber,
-            cellNumber,
-            email,
-            userStatus: UserStatus.ACTIVE,
-            unit,
-            department
-        };
-        this.users.push(user);
-        return user;
+        // } = createUserDto;
     }
 
+    //     const user: User = {
+    //         isAdmin,
+    //         isStaff,
+    //         firstName,
+    //         lastName,
+    //         phoneNumber,
+    //         cellNumber,
+    //         email,
+    //         userStatus: UserStatus.ACTIVE,
+    //         unit,
+    //         department
+    //     };
+    //     return user;
+    // }
+
     getAllUsers() {
-        return this.users;
+    }
+
+    getUserById() {
+        
     }
 }
