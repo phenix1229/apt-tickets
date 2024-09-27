@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { Department, UserStatus } from './user.schema';
 
 export type TicketDocument = HydratedDocument<Ticket>;
 
@@ -12,7 +13,7 @@ export class Ticket {
     openDate: string
 
     @Prop()
-    clentName: string
+    clientName: string
 
     @Prop()
     clientPhone: string
@@ -32,22 +33,11 @@ export class Ticket {
     @Prop()
     assignedDepartment: Department
 
-    @Prop()
-    updateComments: string
+    @Prop([Object])
+    updateComments: Object[]
 
-    @Prop()
-    ticketStatus: TicketStatus
-}
-
-export enum Department {
-    PLUMBING = "PLUMBING",
-    ELECTRICAL = "ELECTRICAL",
-    STRUCTURAL = "STRUCTURAL"
-}
-
-export enum TicketStatus {
-    OPEN = "OPEN",
-    CLOSED = "CLOSED"
+    @Prop({required:true})
+    ticketStatus: UserStatus
 }
 
 export const TicketSchema = SchemaFactory.createForClass(Ticket);

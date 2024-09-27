@@ -37,14 +37,14 @@ export class User {
 }
 
 export enum Department {
-    PLUMBING = "PLUMBING",
-    ELECTRICAL = "ELECTRICAL",
-    STRUCTURAL = "STRUCTURAL"
+    PLUMBING = "Plumbing",
+    ELECTRICAL = "Electrical",
+    STRUCTURAL = "Structural"
 }
 
 export enum UserStatus {
-    ACTIVE = "ACTIVE",
-    INACTIVE = "INACTIVE"
+    ACTIVE = "Active",
+    INACTIVE = "Inactive"
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
