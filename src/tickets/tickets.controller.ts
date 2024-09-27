@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Patch } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
@@ -25,5 +25,10 @@ export class TicketsController {
   @Put(':id')
   update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
     return this.ticketsService.updateTicket(id, updateTicketDto);
+  }
+
+  @Patch(':id')
+  updateComments(@Param('id') id:string, @Body() request:any){
+    return this.ticketsService.updateComments(id, request);
   }
 }

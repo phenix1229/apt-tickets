@@ -36,7 +36,7 @@ export class Ticket {
     @Prop([Object])
     updateComments: Object[]
 
-    @Prop({required:true})
+    @Prop()
     ticketStatus: UserStatus
 }
 
