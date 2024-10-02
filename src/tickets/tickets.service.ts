@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Ticket, TicketDocument } from 'src/schemas/ticket.schema';
+import { timeFormat, dateFormat } from 'src/utils/utilities';
 
 @Injectable()
 export class TicketsService {
@@ -18,8 +19,12 @@ export class TicketsService {
     return this.ticketModel.find();
   }
 
-  getTicketById(id: string) {
-    return this.ticketModel.find( {_id: id} );
+  async getTicketById(id: string): Promise<Ticket> {
+    const ticket = await this.ticketModel.findById( {_id: id} );
+    if(!ticket){
+      throw new NotFoundException();
+    }
+    return ticket;
   }
 
   updateTicket(id: string, updateTicketDto: UpdateTicketDto){
@@ -28,17 +33,9 @@ export class TicketsService {
 
   updateComments(id: string, request: any){
     const {firstName, lastName, comment} = request;
-    const date = new Date();
-    const minuteFormat = () => {
-      if (date.getMinutes() < 10){
-        return `0${date.getMinutes()}`;
-      } else {
-        return `${date.getMinutes()}`;
-      }
-    }
     const ticketUpdate = {
-      "updateDate": `${date.getMonth() +1}/${date.getDate()}/${date.getFullYear()}`,
-      "updateTime": `${date.getHours()}:${minuteFormat()}`,
+      "updateDate": `${dateFormat()}`,
+      "updateTime": `${timeFormat()}`,
       "updatedBy": `${firstName} ${lastName}`,
       comment
     }

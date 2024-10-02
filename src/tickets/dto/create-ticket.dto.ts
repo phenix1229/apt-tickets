@@ -1,5 +1,6 @@
 import { Department, UserStatus } from "src/schemas/user.schema"
 import { IsEmail, IsNotEmpty, IsOptional, IsArray, IsString, IsPhoneNumber, IsEnum } from "class-validator"
+import { dateFormat } from "src/utils/utilities"
 
 export class CreateTicketDto {
     @IsNotEmpty()
@@ -8,7 +9,7 @@ export class CreateTicketDto {
 
     @IsNotEmpty()
     @IsString()
-    openDate: string
+    openDate: string = `${dateFormat()}`
 
     @IsNotEmpty()
     @IsString()
@@ -44,5 +45,5 @@ export class CreateTicketDto {
 
     @IsNotEmpty()
     @IsEnum(UserStatus)
-    ticketStatus: UserStatus
+    ticketStatus: UserStatus = UserStatus.ACTIVE
 }
