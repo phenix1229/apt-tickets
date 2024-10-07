@@ -10,6 +10,8 @@ import { TicketSchema } from './schemas/ticket.schema';
 import { config } from './config';
 import { TicketsModule } from './tickets/tickets.module';
 import { TicketsService } from './tickets/tickets.service';
+import { MailModule } from './mail/mail.module';
+import { MailService } from './mail/mail.service';
 
 @Module({
   imports: [UsersModule, 
@@ -29,9 +31,10 @@ import { TicketsService } from './tickets/tickets.service';
               isGlobal: true, 
               load: [config]
             }),
-            TicketsModule
+            TicketsModule,
+            MailModule
           ],
   controllers: [AppController],
-  providers: [AppService, UsersService, TicketsService],
+  providers: [AppService, UsersService, TicketsService, MailService],
 })
 export class AppModule {}

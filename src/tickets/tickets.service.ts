@@ -5,14 +5,36 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Ticket, TicketDocument } from 'src/schemas/ticket.schema';
 import { timeFormat, dateFormat } from 'src/utils/utilities';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class TicketsService {
-  constructor(@InjectModel('Ticket') private ticketModel: Model<TicketDocument>) {}
+  constructor(@InjectModel('Ticket') private ticketModel: Model<TicketDocument>, private mailService: MailService) {}
 
-  async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
-    new this.ticketModel(createTicketDto).save();
-    return createTicketDto;
+  async create(
+    // createTicketDto: CreateTicketDto, 
+    request: any): Promise<Ticket> {
+    const createTicketDto = {
+    openedBy:request.openedBy,
+    clientName:request.clientName,
+    clientPhone: request.clientPhone,
+    clientCell: request.clientCell,
+    clientEmail: request.clientEmail,
+    clientLocation: request.clientLocation,
+    description: request.description,
+    assignedDepartment: request.assignedDepartment,
+    updateComments: [],
+    }
+    const ticket = await new this.ticketModel(createTicketDto).save();
+    const emailDto = { 
+      sender:request.sender, 
+      recipient:request.clientEmail, 
+      subject:`New Ticket (${ticket._id})`, 
+      text:`Ticket ${ticket._id} was created for you on ${dateFormat()}.`
+    };
+    this.mailService.sendEmail(emailDto);
+    // return createTicketDto;
+    return ticket;
   }
 
   async getAllTickets() {
