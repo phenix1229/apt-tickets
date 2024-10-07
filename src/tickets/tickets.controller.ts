@@ -6,7 +6,7 @@ import { MailService } from 'src/mail/mail.service';
 
 @Controller('tickets')
 export class TicketsController {
-  constructor(private readonly ticketsService: TicketsService, private mailService: MailService) {}
+  constructor(private readonly ticketsService: TicketsService) {}
 
   @Post()
   createTicket(@Body()request: any) {
