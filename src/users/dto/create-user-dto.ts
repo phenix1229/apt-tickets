@@ -30,7 +30,7 @@ export class CreateUserDto {
 
     @IsNotEmpty()
     @IsEnum(UserStatus)
-    userStatus: UserStatus;
+    userStatus: UserStatus = UserStatus.ACTIVE;
 
     @IsOptional()
     @IsString()

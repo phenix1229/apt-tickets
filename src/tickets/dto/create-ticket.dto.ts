@@ -1,49 +1,49 @@
-import { Department, UserStatus } from "src/schemas/user.schema"
 import { IsEmail, IsNotEmpty, IsOptional, IsArray, IsString, IsPhoneNumber, IsEnum } from "class-validator"
+import { Department, UserStatus } from "src/schemas/user.schema"
 import { dateFormat } from "src/utils/utilities"
 
 export class CreateTicketDto {
     @IsNotEmpty()
     @IsString()
-    openedBy: string
+    openedBy: string;
 
     @IsNotEmpty()
     @IsString()
-    openDate: string = `${dateFormat()}`
+    openDate: string = `${dateFormat()}`;
 
     @IsNotEmpty()
     @IsString()
-    clientName: string
+    clientName: string;
 
     @IsNotEmpty()
     @IsPhoneNumber()
-    clientPhone: string
+    clientPhone: string;
 
     @IsNotEmpty()
     @IsPhoneNumber()
-    clientCell: string
+    clientCell: string;
 
     @IsNotEmpty()
     @IsEmail()
-    clientEmail: string
+    clientEmail: string;
 
     @IsNotEmpty()
     @IsString()
-    clientLocation: string
+    clientLocation: string;
 
     @IsNotEmpty()
     @IsString()
-    description: string
+    description: string;
 
     @IsNotEmpty()
     @IsEnum(Department)
-    assignedDepartment: Department
-
-    @IsOptional()
-    @IsArray()
-    updateComments: [Object]
+    assignedDepartment: Department;
 
     @IsNotEmpty()
     @IsEnum(UserStatus)
-    ticketStatus: UserStatus = UserStatus.ACTIVE
+    ticketStatus: UserStatus = UserStatus.ACTIVE;
+    
+    @IsOptional()
+    @IsArray()
+    updateComments?: [Object];
 }

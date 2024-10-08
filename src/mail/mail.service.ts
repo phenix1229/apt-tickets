@@ -1,17 +1,14 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-// import { SendEmailDto } from './dto/send_email.dto';
 
 @Injectable()
 export class MailService {
-    constructor(private readonly mailerService: MailerService, private readonly config: ConfigService) {}
+    constructor(private readonly mailerService: MailerService) {}
     
-    public sendEmail(dto): void {
-        const { sender, recipient, subject, text } = dto;
+    public sendEmail(to:string, subject:string, text:string): void {
         this.mailerService.sendMail({
-            from: sender,
-            to: recipient,
+            from: 'Ticket Service <no-reply@ticketservice.com>',
+            to,
             subject,
             text
         })

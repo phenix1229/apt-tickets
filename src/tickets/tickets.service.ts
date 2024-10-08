@@ -11,16 +11,9 @@ import { MailService } from 'src/mail/mail.service';
 export class TicketsService {
   constructor(@InjectModel('Ticket') private ticketModel: Model<TicketDocument>, private mailService: MailService) {}
 
-  async create(
-    createTicketDto: CreateTicketDto): Promise<Ticket> {
+  async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
     const ticket = await new this.ticketModel(createTicketDto).save();
-    const emailDto = { 
-      sender:'TicketService <no-reply@ticketservice.com>', 
-      recipient:ticket.clientEmail, 
-      subject:`New Ticket (${ticket._id})`, 
-      text:`Ticket ${ticket._id} was created for you on ${dateFormat()}.`
-    };
-    this.mailService.sendEmail(emailDto);
+    this.mailService.sendEmail(ticket.clientEmail,`New Ticket (${ticket._id})`,`Ticket ${ticket._id} was created for you on ${dateFormat()}.`);
     return ticket;
   }
 
@@ -39,13 +32,7 @@ export class TicketsService {
   async updateTicket(id: string, updateTicketDto: UpdateTicketDto){
     await this.ticketModel.updateOne({_id: id}, {$set: {...updateTicketDto}});
     const ticket = await this.ticketModel.findById( {_id: id} );
-    const emailDto = { 
-      sender: 'TicketService <no-reply@ticketservice.com>', 
-      recipient:ticket.clientEmail, 
-      subject:`Changes to Ticket (${ticket._id})`, 
-      text:`Changes to ticket ${ticket._id} were made on ${dateFormat()}.`
-    };
-    this.mailService.sendEmail(emailDto);
+    this.mailService.sendEmail(ticket.clientEmail,`Changes to Ticket (${ticket._id})`,`Changes to ticket ${ticket._id} were made on ${dateFormat()}.`);
     return ticket;
   }
 
@@ -63,6 +50,7 @@ export class TicketsService {
           ticket.ticketStatus = request.ticketStatus;
         }
       ticket.save();
+      this.mailService.sendEmail(ticket.clientEmail,`Changes to Ticket (${ticket._id})`,`Changes to ticket ${ticket._id} were made on ${dateFormat()}.`);
       }
     )
     return this.ticketModel.findById({_id: id});

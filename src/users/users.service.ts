@@ -13,13 +13,7 @@ export class UsersService {
 
     async createUser(createUserDto: CreateUserDto): Promise<User> {
         const user = await new this.userModel(createUserDto).save();
-        const emailDto = { 
-            sender: 'TicketService <no-reply@ticketservice.com>', 
-            recipient:user.email, 
-            subject:`New Account (${user._id})`, 
-            text:`Account ${user._id} was created for you on ${dateFormat()}.`
-        };
-        this.mailService.sendEmail(emailDto);
+        this.mailService.sendEmail(user.email,`New Account (${user._id})`,`Account ${user._id} was created for you on ${dateFormat()}.`);
         return createUserDto;
     }
 
@@ -39,7 +33,7 @@ export class UsersService {
             subject:`Changes to User Account`, 
             text:`Changes to account with username: ${email} were made on ${dateFormat()}.`
         };
-        this.mailService.sendEmail(emailDto);
+        // this.mailService.sendEmail(emailDto);
         return user;
     }
 }
