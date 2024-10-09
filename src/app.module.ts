@@ -12,6 +12,8 @@ import { TicketsModule } from './tickets/tickets.module';
 import { TicketsService } from './tickets/tickets.service';
 import { MailModule } from './mail/mail.module';
 import { MailService } from './mail/mail.service';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [UsersModule, 
@@ -32,9 +34,10 @@ import { MailService } from './mail/mail.service';
               load: [config]
             }),
             TicketsModule,
-            MailModule
+            MailModule,
+            AuthModule
           ],
   controllers: [AppController],
-  providers: [AppService, UsersService, TicketsService, MailService],
+  providers: [AppService, UsersService, TicketsService, MailService, AuthService],
 })
 export class AppModule {}
