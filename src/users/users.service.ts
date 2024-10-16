@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument} from '../schemas/user.schema';
 import { MailService } from 'src/mail/mail.service';
 import { dateFormat } from 'src/utils/utilities';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -15,6 +16,9 @@ export class UsersService {
         if(await this.userModel.findOne({email:createUserDto.email})){
             throw new ConflictException('This username/email already exists.');
         }
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
+        createUserDto.password = hashedPassword;
         const user = await new this.userModel(createUserDto).save();
         this.mailService.sendEmail(user.email,`New Account (${user._id})`,`Account ${user._id} was created for you on ${dateFormat()}.`);
         return createUserDto;

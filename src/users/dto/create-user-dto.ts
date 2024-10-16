@@ -6,7 +6,6 @@ export class CreateUserDto {
     @IsString()
     @MinLength(8)
     @MaxLength(12)
-    // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)
     @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
     password: string;
 

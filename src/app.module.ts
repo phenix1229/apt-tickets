@@ -12,8 +12,9 @@ import { TicketsModule } from './tickets/tickets.module';
 import { TicketsService } from './tickets/tickets.service';
 import { MailModule } from './mail/mail.module';
 import { MailService } from './mail/mail.service';
-import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [UsersModule, 
@@ -38,6 +39,6 @@ import { AuthService } from './auth/auth.service';
             AuthModule
           ],
   controllers: [AppController],
-  providers: [AppService, UsersService, TicketsService, MailService, AuthService],
+  providers: [AppService, UsersService, TicketsService, MailService, AuthService, JwtService],
 })
 export class AppModule {}
