@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Render, UnauthorizedException } from '@nestjs/common';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { Model } from 'mongoose';
@@ -10,9 +10,9 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel('User') private userModel: Model<UserDocument>, private jwtService: JwtService){}
+  constructor(@InjectModel('User') private userModel: Model<UserDocument>, private jwtService: JwtService){};
 
-  async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{accessToken: string}> {
+  async signIn(authCredentialsDto: AuthCredentialsDto){
     const {email, password} = authCredentialsDto;
     const user = await this.userModel.findOne({email});
     if(user && (await bcrypt.compare(password, user.password))){
@@ -31,6 +31,7 @@ export class AuthService {
           }
         };
         const accessToken: string = await this.jwtService.sign(payload)
+        console.log(payload);
         return {accessToken};
       } else {
         throw new UnauthorizedException('This user account is no longer active.')
@@ -38,6 +39,10 @@ export class AuthService {
     } else {
       throw new UnauthorizedException('Please check your login credentials.')
     }
+  }
+
+  async adminHome(){
+    return {}
   }
 
   findAll() {

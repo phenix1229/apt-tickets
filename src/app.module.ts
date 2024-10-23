@@ -7,7 +7,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './schemas/user.schema';
 import { TicketSchema } from './schemas/ticket.schema';
-import { config } from './config';
 import { TicketsModule } from './tickets/tickets.module';
 import { TicketsService } from './tickets/tickets.service';
 import { MailModule } from './mail/mail.module';
@@ -31,8 +30,7 @@ import { JwtService } from '@nestjs/jwt';
               name: 'Ticket', schema: TicketSchema
             }]),
             ConfigModule.forRoot({
-              isGlobal: true, 
-              load: [config]
+              isGlobal: true
             }),
             TicketsModule,
             MailModule,

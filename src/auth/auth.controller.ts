@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Render } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { JwtPayload } from './jwt-payload.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -10,6 +11,15 @@ export class AuthController {
   @Post('/signIn')
   signIn(@Body() authCredentialsDto: AuthCredentialsDto): Promise<{accessToken: string}>{
     return this.authService.signIn(authCredentialsDto);
+  }
+
+  // @Get()
+  // @Render('index')
+  
+  @Get('/adminHome')
+  @Render('adminHome')
+  async adminHome(){
+    return await this.authService.adminHome();
   }
 
   @Get()
