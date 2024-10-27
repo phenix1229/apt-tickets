@@ -15,7 +15,7 @@ export class TicketsService {
 
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
     
-    console.log(`user = `)
+    // console.log(`user = `)
     // if(user.isStaff === true){
     //   throw new UnauthorizedException('You are not authorized to perform this action.')
     // }
@@ -30,16 +30,16 @@ export class TicketsService {
 
   async getTicketById(id: string): Promise<Ticket> {
     const ticket = await this.ticketModel.findById( {_id: id} );
-    if(!ticket){
-      throw new NotFoundException();
-    }
+    // if(!ticket){
+    //   throw new NotFoundException();
+    // }
     return ticket;
   }
 
   async updateTicket(id: string, updateTicketDto: UpdateTicketDto): Promise<Ticket>{
     await this.ticketModel.updateOne({_id: id}, {$set: {...updateTicketDto}});
     const ticket = await this.ticketModel.findById( {_id: id} );
-    this.mailService.sendEmail(ticket.clientEmail,`Changes to Ticket (${ticket._id})`,`Changes to ticket ${ticket._id} were made on ${dateFormat()}.`);
+    // this.mailService.sendEmail(ticket.clientEmail,`Changes to Ticket (${ticket._id})`,`Changes to ticket ${ticket._id} were made on ${dateFormat()}.`);
     return ticket;
   }
 
@@ -57,7 +57,7 @@ export class TicketsService {
           ticket.ticketStatus = request.ticketStatus;
         }
       ticket.save();
-      this.mailService.sendEmail(ticket.clientEmail,`Changes to Ticket (${ticket._id})`,`Changes to ticket ${ticket._id} were made on ${dateFormat()}.`);
+      // this.mailService.sendEmail(ticket.clientEmail,`Changes to Ticket (${ticket._id})`,`Changes to ticket ${ticket._id} were made on ${dateFormat()}.`);
       }
     )
     return await this.ticketModel.findById({_id: id});

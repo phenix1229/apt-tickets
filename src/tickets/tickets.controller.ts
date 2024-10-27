@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Patch, UseGuards, Query, HttpStatus, Res, NotFoundException } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
@@ -12,27 +12,50 @@ export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
   @Post()
-  async createTicket(@Body() createTicketDto: CreateTicketDto) {
-    return await this.ticketsService.create(createTicketDto);
+  async createTicket(@Res() res, @Body() createTicketDto: CreateTicketDto) {
+    const newTicket = await this.ticketsService.create(createTicketDto);
+    return res.status(HttpStatus.OK).json({
+      message: 'Ticket created successfully.',
+      ticket: newTicket
+    });
   }
 
   @Get()
-  async getAllTickets() {
-    return await this.ticketsService.getAllTickets();
+  async getAllTickets(@Res() res) {
+    const tickets = await this.ticketsService.getAllTickets();
+    return res.status(HttpStatus.OK).json(tickets);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.ticketsService.getTicketById(id);
+  async findOne(@Res() res, @Param('id') id: string) {
+    const ticket = await this.ticketsService.getTicketById(id);
+    if(!ticket){
+      throw new NotFoundException('Ticket does not exist.');
+    }
+    return res.status(HttpStatus.OK).json(ticket)
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
-    return await this.ticketsService.updateTicket(id, updateTicketDto);
+  async update(@Res() res, @Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
+    const updatedTicket = await this.ticketsService.updateTicket(id, updateTicketDto);
+    if(!updatedTicket){
+      throw new NotFoundException('Ticket does not exist.');
+    }
+    return res.status(HttpStatus.OK).json({
+      message: 'Ticket updated successfully.',
+      ticket: updatedTicket
+    });
   }
 
   @Patch(':id')
-  async updateComments(@Param('id') id:string, @Body() request:any){
-    return await this.ticketsService.updateComments(id, request);
+  async updateComments(@Res() res, @Param('id') id:string, @Body() request:any){
+    const updatedTicket = await this.ticketsService.updateComments(id, request);
+    if(!updatedTicket){
+      throw new NotFoundException('Ticket does not exist.');
+    }
+    return res.status(HttpStatus.OK).json({
+      message: 'Ticket updated successfully.',
+      ticket: updatedTicket
+    });
   }
 }
