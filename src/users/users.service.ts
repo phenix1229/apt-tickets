@@ -39,7 +39,7 @@ export class UsersService {
             throw new NotFoundException('User does not exist.');
         }
         const updatedUser = await this.userModel.updateOne({email}, {$set: {...updateUserDto}});
-        // this.mailService.sendEmail(email,`Changes to User Account`,`Changes to account with username: ${email} were made on ${dateFormat()}.`);
+        this.mailService.sendEmail(email,`Changes to User Account`,`Changes to account with username: ${email} were made on ${dateFormat()}.`);
         return user;
     }
 

@@ -35,9 +35,6 @@ export class UsersController {
     @Put(':email')
     async update(@Res() res, @Param('email')  email: string, @Body() updateUserDto: UpdateUserDto){
         const updatedUser = await this.usersService.updateUser(email, updateUserDto);
-        // if(!updatedUser){
-        //     throw new NotFoundException('Ticket does not exist.');
-        // }
         return res.status(HttpStatus.OK).json({
         message: 'User updated successfully.',
         user: updatedUser
