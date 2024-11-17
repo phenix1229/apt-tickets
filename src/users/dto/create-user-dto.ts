@@ -1,5 +1,5 @@
 import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, Matches, MaxLength, MinLength } from "class-validator";
-import { UserStatus, Department } from "../../schemas/user.schema";
+import { Role, UserStatus, Department } from "../../schemas/user.schema";
 
 export class CreateUserDto {
     @IsNotEmpty()
@@ -10,12 +10,8 @@ export class CreateUserDto {
     password: string;
 
     @IsNotEmpty()
-    @IsBoolean()
-    isAdmin: boolean;
-
-    @IsNotEmpty()
-    @IsBoolean()
-    isStaff: boolean;
+    @IsEnum(Role)
+    role: Role
 
     @IsNotEmpty()
     @IsString()

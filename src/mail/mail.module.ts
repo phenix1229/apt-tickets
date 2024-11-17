@@ -10,9 +10,14 @@ import { ConfigService } from '@nestjs/config';
       inject:[ConfigService],
       useFactory: (configService: ConfigService) => ({
         transport: {
-          host: configService.get('MAIL_HOST'),
-          secure: false,
-          port: 2525,
+            host: configService.get('MAIL_HOST'),
+            port: 587,
+            service:'Yahoo',
+            secure: false,
+            tls: {
+                requireTLS: true,
+                ciphers:'SSLv3'
+            },
           auth: {
             user: configService.get('SMTP_USERNAME'),
             pass: configService.get('SMTP_PASSWORD')

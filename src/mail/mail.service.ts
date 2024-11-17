@@ -7,7 +7,7 @@ export class MailService {
     
     public sendEmail(to:string, subject:string, text:string): void {
         this.mailerService.sendMail({
-            from: 'Ticket Service <no-reply@ticketservice.com>',
+            from: 'Paul Garay <pgaray1229@yahoo.com>',
             to,
             subject,
             text

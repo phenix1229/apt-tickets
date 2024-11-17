@@ -4,7 +4,7 @@ import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/schemas/user.schema';
-import { GetUser } from 'src/auth/get-user.decorator';
+// import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('tickets')
 // @UseGuards(AuthGuard())

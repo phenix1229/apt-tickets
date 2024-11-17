@@ -9,10 +9,7 @@ export class User {
     password: string;
 
     @Prop()
-    isAdmin: boolean;
-
-    @Prop()
-    isStaff: boolean;
+    role: Role;
 
     @Prop()
     firstName: string;
@@ -37,6 +34,12 @@ export class User {
 
     @Prop()
     userStatus: UserStatus;
+}
+
+export enum Role {
+    ADMIN = "Admin",
+    STAFF = "Staff",
+    RESIDENT = "Resident"
 }
 
 export enum Department {
