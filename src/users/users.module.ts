@@ -11,7 +11,7 @@ import { jwtConstants } from 'src/auth/constants';
   imports: [
     MongooseModule.forFeature([{name: User.name, schema: UserSchema}]),
     JwtModule.register({
-      secret:`${jwtConstants.secret}`,
+      secret:jwtConstants.secret,
       signOptions: {expiresIn: '1w'}
     })
   ],
@@ -19,14 +19,14 @@ import { jwtConstants } from 'src/auth/constants';
   providers: [UsersService]
 })
 
-export class UsersModule 
-implements NestModule {
-  configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
-    consumer.apply(AuthenticationMiddleware).forRoutes(
-      {method: RequestMethod.POST, path: 'users'},
-      {method: RequestMethod.GET, path: 'users'},
-      {method: RequestMethod.GET, path: 'users/:id'},
-      {method: RequestMethod.PUT, path: 'users'}
-    )
-  }
-}
+export class UsersModule {}
+// implements NestModule {
+//   configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
+//     consumer.apply(AuthenticationMiddleware).forRoutes(
+      // {method: RequestMethod.POST, path: 'users'},
+      // {method: RequestMethod.GET, path: 'users'},
+      // {method: RequestMethod.GET, path: 'users/:id'},
+      // {method: RequestMethod.PUT, path: 'users'}
+//     )
+//   }
+// }

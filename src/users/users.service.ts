@@ -48,31 +48,6 @@ export class UsersService {
         if(!user || !await bcrypt.compare(password, user.password)){
             throw new BadRequestException('Invalid credentials.')
         }
-        const accessToken = await this.jwtService.signAsync({
-            role: user.role,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            phoneNumber: user.phoneNumber,
-            cellNumber: user.cellNumber,
-            email: user.email,
-            unit: user.unit,
-            department: user.department
-        }, {expiresIn: '30s'});
-        const refreshToken = await this.jwtService.signAsync({
-            role: user.role,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            phoneNumber: user.phoneNumber,
-            cellNumber: user.cellNumber,
-            email: user.email,
-            unit: user.unit,
-            department: user.department
-        });
-        // res.cookie('refreshToken', refreshToken,{
-        //     httpOnly: true,
-        //     maxAge: 7*24*60*60*1000
-        // })
-
-        return {token:accessToken};
+        return user;
     }
 }
