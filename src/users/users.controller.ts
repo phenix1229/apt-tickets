@@ -30,8 +30,18 @@ export class UsersController {
         try{
             const accessToken = req.headers.authorization.replace('Bearer ','');
             const {email} = await this.jwtService.verifyAsync(accessToken);
-            const user = await this.usersService.getUserById(email)
-            return res.status(HttpStatus.OK).json(user)
+            const user = await this.usersService.getUserById(email);
+            const authUser = {
+                role: user.role,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                phoneNumber: user.phoneNumber,
+                cellNumber: user.cellNumber,
+                email: user.email,
+                unit: user.unit,
+                department: user.department
+            }
+            return res.status(HttpStatus.OK).json(authUser);
         } catch(e) {
             throw new UnauthorizedException();
         }
@@ -85,6 +95,23 @@ export class UsersController {
             maxAge: 7*24*60*60*1000
         })
         return {token:accessToken};
+    }
+
+    @Post('refresh')
+    async refresh(@Req() req:express.Request, @Res() res:express.Response){
+        try {
+            const refreshToken = req.cookies['refreshToken'];
+            const {email} = await this.jwtService.verifyAsync(refreshToken);
+            const token = await this.jwtService.signAsync({email},{expiresIn:'30s'})
+            return res.status(HttpStatus.OK).json({token});
+        } catch(e) {
+            throw new UnauthorizedException;
+        }
+    }
+
+    @Post('logout')
+    async logout(@Res({passthrough:true}) res:express.Response){
+        return res.status(HttpStatus.OK).clearCookie('refreshToken').statusMessage = 'success';
     }
 
 }
