@@ -2,16 +2,15 @@ import { Controller, Get, Post, Body, Put, Param, Patch, UseGuards, Query, HttpS
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
-import { AuthGuard } from '@nestjs/passport';
-import { User } from 'src/schemas/user.schema';
-// import { GetUser } from 'src/auth/get-user.decorator';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/schemas/user.schema';
 
 @Controller('tickets')
-// @UseGuards(AuthGuard())
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
   @Post()
+  @Roles(Role.ADMIN,Role.RESIDENT)
   async createTicket(@Res() res, @Body() createTicketDto: CreateTicketDto) {
     const newTicket = await this.ticketsService.create(createTicketDto);
     return res.status(HttpStatus.OK).json({
@@ -20,13 +19,15 @@ export class TicketsController {
     });
   }
 
-  @Get()
+  @Get('all')
+  @Roles(Role.ADMIN)
   async getAllTickets(@Res() res) {
     const tickets = await this.ticketsService.getAllTickets();
     return res.status(HttpStatus.OK).json(tickets);
   }
 
   @Get(':id')
+  @Roles(Role.ADMIN)
   async findOne(@Res() res, @Param('id') id: string) {
     const ticket = await this.ticketsService.getTicketById(id);
     if(!ticket){

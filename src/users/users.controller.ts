@@ -4,13 +4,13 @@ import { CreateUserDto } from './dto/create-user-dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as express from 'express';
-import { jwtConstants } from 'src/auth/constants';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/schemas/user.schema';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('users')
 export class UsersController {
-    constructor(private usersService:UsersService, private jwtService:JwtService){}
+    constructor(private usersService:UsersService, private jwtService:JwtService, private configService: ConfigService){}
 
     @Post()
     @Roles(Role.ADMIN)
@@ -84,7 +84,7 @@ export class UsersController {
             email: user.email,
             unit: user.unit,
             department: user.department
-        }, {secret:jwtConstants.secret,expiresIn: '60s'});
+        }, {secret:this.configService.get("JWT_ACCESS_TOKEN_SECRET"),expiresIn: '60s'});
         const refreshToken = await this.jwtService.signAsync({
             role: user.role,
             firstName: user.firstName,

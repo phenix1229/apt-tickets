@@ -11,8 +11,6 @@ import { TicketsModule } from './tickets/tickets.module';
 import { TicketsService } from './tickets/tickets.service';
 import { MailModule } from './mail/mail.module';
 import { MailService } from './mail/mail.service';
-import { AuthService } from './auth/auth.service';
-import { AuthModule } from './auth/auth.module';
 import { JwtService } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/role.guard';
@@ -35,8 +33,7 @@ import { RolesGuard } from './auth/guards/role.guard';
               isGlobal: true
             }),
             TicketsModule,
-            MailModule,
-            AuthModule
+            MailModule
   ],
   controllers: [AppController],
   providers: [
@@ -44,7 +41,6 @@ import { RolesGuard } from './auth/guards/role.guard';
     UsersService, 
     TicketsService, 
     MailService, 
-    AuthService, 
     JwtService,
     {
       provide: APP_GUARD,
