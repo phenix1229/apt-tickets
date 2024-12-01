@@ -5,12 +5,15 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as express from 'express';
 import { jwtConstants } from 'src/auth/constants';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/schemas/user.schema';
 
 @Controller('users')
 export class UsersController {
     constructor(private usersService:UsersService, private jwtService:JwtService){}
 
     @Post()
+    @Roles(Role.ADMIN)
     async createUser(@Res() res, @Body() createUserDto: CreateUserDto) {
         const newUser = await this.usersService.createUser(createUserDto);
         return res.status(HttpStatus.OK).json({
@@ -20,6 +23,7 @@ export class UsersController {
     }
 
     @Get('all')
+    @Roles(Role.ADMIN)
     async getAllUsers(@Res() res) {
         const users = await this.usersService.getAllUsers();
         return res.status(HttpStatus.OK).json(users);
@@ -48,6 +52,7 @@ export class UsersController {
 
     }
     @Get(':email')
+    @Roles(Role.ADMIN)
     async findOne(@Res() res, @Param('email') email: string){
         const user = await this.usersService.getUserById(email);
         if(!user){
@@ -58,6 +63,7 @@ export class UsersController {
 
 
     @Put(':email')
+    @Roles(Role.ADMIN)
     async update(@Res() res, @Param('email')  email: string, @Body() updateUserDto: UpdateUserDto){
         const updatedUser = await this.usersService.updateUser(email, updateUserDto);
         return res.status(HttpStatus.OK).json({

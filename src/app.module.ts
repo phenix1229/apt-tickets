@@ -14,6 +14,8 @@ import { MailService } from './mail/mail.service';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtService } from '@nestjs/jwt';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/guards/role.guard';
 
 @Module({
   imports: [UsersModule, 
@@ -35,8 +37,19 @@ import { JwtService } from '@nestjs/jwt';
             TicketsModule,
             MailModule,
             AuthModule
-          ],
+  ],
   controllers: [AppController],
-  providers: [AppService, UsersService, TicketsService, MailService, AuthService, JwtService],
+  providers: [
+    AppService, 
+    UsersService, 
+    TicketsService, 
+    MailService, 
+    AuthService, 
+    JwtService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard
+    }
+  ],
 })
 export class AppModule {}

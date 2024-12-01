@@ -3,12 +3,29 @@ import { HydratedDocument } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
+export enum Role {
+    ADMIN = "Admin",
+    STAFF = "Staff",
+    RESIDENT = "Resident"
+}
+
+export enum Department {
+    PLUMBING = "Plumbing",
+    ELECTRICAL = "Electrical",
+    STRUCTURAL = "Structural"
+}
+
+export enum UserStatus {
+    ACTIVE = "Active",
+    INACTIVE = "Inactive"
+}
+
 @Schema()
 export class User {
     @Prop()
     password: string;
 
-    @Prop()
+    @Prop(Role)
     role: Role;
 
     @Prop()
@@ -36,21 +53,6 @@ export class User {
     userStatus: UserStatus;
 }
 
-export enum Role {
-    ADMIN = "Admin",
-    STAFF = "Staff",
-    RESIDENT = "Resident"
-}
 
-export enum Department {
-    PLUMBING = "Plumbing",
-    ELECTRICAL = "Electrical",
-    STRUCTURAL = "Structural"
-}
-
-export enum UserStatus {
-    ACTIVE = "Active",
-    INACTIVE = "Inactive"
-}
 
 export const UserSchema = SchemaFactory.createForClass(User);
