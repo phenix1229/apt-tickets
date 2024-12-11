@@ -13,13 +13,29 @@ export class UsersController {
     constructor(private usersService:UsersService, private jwtService:JwtService, private configService: ConfigService){}
 
     @Post()
-    @Roles(Role.ADMIN)
+    // @Roles(Role.ADMIN)
     async createUser(@Res() res, @Body() createUserDto: CreateUserDto) {
         const newUser = await this.usersService.createUser(createUserDto);
-        return res.status(HttpStatus.OK).json({
-            message: 'User created successfully.',
-            user: newUser
-        });
+        if(newUser){
+            return res.status(HttpStatus.OK).json({
+                message: 'User created successfully.',
+                user: newUser
+            });
+        }
+        return res.status(HttpStatus.BAD_REQUEST).json({
+            message: 'All fields are required'
+        })
+    }
+
+    @Post('register')
+    async registerUser(@Res() res, @Body() createUserDto: CreateUserDto) {
+        const newUser = await this.usersService.registerUser(createUserDto);
+        if(newUser){
+            return res.status(HttpStatus.OK).json({
+                message: 'User created successfully.',
+                user: newUser
+            });
+        }
     }
 
     @Get('all')
@@ -116,8 +132,10 @@ export class UsersController {
     }
 
     @Post('logout')
-    async logout(@Res({passthrough:true}) res:express.Response){
-        return res.status(HttpStatus.OK).clearCookie('refreshToken').statusMessage = 'success';
+    async logout(@Res({passthrough:true}) res: express.Response){
+        res.clearCookie('refreshToken');
+        return {message:'success'}
     }
+
 
 }
