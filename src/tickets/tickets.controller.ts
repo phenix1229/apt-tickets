@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Patch, UseGuards, Query, HttpStatus, Res, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Patch, UseGuards, Query, HttpStatus, Res, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
@@ -21,14 +21,14 @@ export class TicketsController {
   }
 
   @Get('all')
-  // @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN)
   async getAllTickets(@Res() res:express.Response) {
     const tickets = await this.ticketsService.getAllTickets();
     return res.status(HttpStatus.OK).json(tickets);
   }
 
   @Get(':id')
-  // @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN)
   async findOne(@Res() res:express.Response, @Param('id') id: string) {
     const ticket = await this.ticketsService.getTicketById(id);
     if(!ticket){
@@ -38,7 +38,7 @@ export class TicketsController {
   }
   
   @Get('byEmail/:id')
-  // @Roles(Role.ADMIN)
+  @Roles(Role.RESIDENT)
   async findByEmail(@Res() res:express.Response, @Param('id') id: string) {
     const ticket = await this.ticketsService.getTicketByEmail(id);
     if(!ticket){
@@ -48,16 +48,17 @@ export class TicketsController {
   }
   
   @Get('byDepartment/:id')
-  // @Roles(Role.ADMIN)
+  @Roles(Role.STAFF)
   async findByDepartment(@Res() res:express.Response, @Param('id') id: string) {
     const ticket = await this.ticketsService.getTicketsByDepartment(id);
     if(!ticket){
-      throw new NotFoundException('Ticket does not exist.');
+      throw new UnauthorizedException;
     }
     return res.status(HttpStatus.OK).json(ticket)
   }
 
   @Put(':id')
+  @Roles(Role.ADMIN,Role.RESIDENT)
   async update(@Res() res:express.Response, @Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
     const updatedTicket = await this.ticketsService.updateTicket(id, updateTicketDto);
     if(!updatedTicket){

@@ -13,7 +13,7 @@ export class UsersController {
     constructor(private usersService:UsersService, private jwtService:JwtService, private configService: ConfigService){}
 
     @Post()
-    // @Roles(Role.ADMIN)
+    @Roles(Role.ADMIN)
     async createUser(@Res() res, @Body() createUserDto: CreateUserDto) {
         const newUser = await this.usersService.createUser(createUserDto);
         if(newUser){
@@ -110,7 +110,7 @@ export class UsersController {
             email: user.email,
             unit: user.unit,
             department: user.department
-        });
+        },{secret:this.configService.get("JWT_ACCESS_TOKEN_SECRET")});
         res.status(200);
         res.cookie('refreshToken', refreshToken,{
             httpOnly: true,
@@ -123,7 +123,7 @@ export class UsersController {
     async refresh(@Req() req:express.Request, @Res() res:express.Response){
         try {
             const refreshToken = req.cookies['refreshToken'];
-            const {email} = await this.jwtService.verifyAsync(refreshToken);
+            const {email} = await this.jwtService.verifyAsync(refreshToken,{secret:this.configService.get("JWT_ACCESS_TOKEN_SECRET")});
             const token = await this.jwtService.signAsync({email},{expiresIn:'30s'})
             return res.status(HttpStatus.OK).json({token});
         } catch(e) {
