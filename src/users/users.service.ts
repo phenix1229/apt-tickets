@@ -29,7 +29,6 @@ export class UsersService {
         if(await this.userModel.findOne({email:createUserDto.email})){
             throw new ConflictException('This username/email already exists.');
         }
-        console.log(createUserDto)
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
         createUserDto.password = hashedPassword;

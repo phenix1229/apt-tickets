@@ -18,8 +18,7 @@ export class UsersController {
         const newUser = await this.usersService.createUser(createUserDto);
         if(newUser){
             return res.status(HttpStatus.OK).json({
-                message: 'User created successfully.',
-                user: newUser
+                message: 'User created successfully.'
             });
         }
         return res.status(HttpStatus.BAD_REQUEST).json({
@@ -32,10 +31,10 @@ export class UsersController {
         const newUser = await this.usersService.registerUser(createUserDto);
         if(newUser){
             return res.status(HttpStatus.OK).json({
-                message: 'User created successfully.',
-                user: newUser
+                message: 'User created successfully.'
             });
         }
+        return res.message
     }
 
     @Get('all')
@@ -100,7 +99,7 @@ export class UsersController {
             email: user.email,
             unit: user.unit,
             department: user.department
-        }, {secret:this.configService.get("JWT_ACCESS_TOKEN_SECRET"),expiresIn: '60s'});
+        }, {secret:this.configService.get("JWT_ACCESS_TOKEN_SECRET"),expiresIn: '10h'});
         const refreshToken = await this.jwtService.signAsync({
             role: user.role,
             firstName: user.firstName,

@@ -42,7 +42,8 @@ export class TicketsController {
   async findByEmail(@Res() res:express.Response, @Param('id') id: string) {
     const ticket = await this.ticketsService.getTicketByEmail(id);
     if(!ticket){
-      throw new NotFoundException('Ticket does not exist.');
+      // throw new NotFoundException('Ticket does not exist.');
+      return res.status(HttpStatus.UNAUTHORIZED).json({message:"You are not authorized for this function"})
     }
     return res.status(HttpStatus.OK).json(ticket)
   }
