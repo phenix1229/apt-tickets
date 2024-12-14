@@ -1,85 +1,52 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+This system was created as an independent study project at Empire State University. It is an online work ticket system for a theoritical apartment building. The system has slightly different features based on user classification (resident, staff member, administrator). The system has the following overall features:
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+*	Ticket creation
+*	Ticket viewing
+*	Ticket updates (including closure)
+*	Ticket assignment (automated)
+*	Alerts for creation, assignment, updates, closure (automated)
+*	Ticket search by various fields
+*	Account creation
+*	Authentication
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+An example of a resident use case:
 
-## Description
+*	Resident creates an account and is logged into the system
+*	An alert email is sent to confirm account creation
+*	Resident creates a work ticket for a specific issue
+*	The ticket is automatically assigned to a department who is qualified to resolve the issue
+*	An alert email is sent to confirm ticket creation
+*	Resident can log into the system to see status/updates or close ticket if help is no longer needed
+*	Resident can also look up their past tickets
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+An example of a staff member use case:
 
-## Project setup
+*	Staff member logs into system
+*	Staff member views tickets assigned to their department
+*	Staff member opens a specific ticket and enters an update (including closure)
+*	Resident automatically receives an alert email stating the update/new status of ticket
+*	Staff member can also look up past tickets for their department
 
-```bash
-$ npm install
-```
+An example of an administrator use case:
 
-## Compile and run the project
+*	Administrator logs in
+*	Administrator creates an account for a new staff member (or resident, though residents can self-register)
+*	Administrator can view and edit all accounts for former staff members or residents
+*	Administrator can also look up all current and past tickets, as well as open and update tickets
 
-```bash
-# development
-$ npm run start
+The system will operate as follows:
 
-# watch mode
-$ npm run start:dev
+*	User either logs in or creates account (only authorized users may access system)
+*	Backend server determines user classification and determines appropriate options/page which is presented on the front end to the user
+*	Upon any ticket or account action backend will send an alert email to the appropriate party
+*	Any ticket updates (including creation and closure) will be timestamped and marked with the name of the party who made the update
+*	Backend will save to and retrieve all data from database
+*	Users will only have access to data appropriate to their classification
+*	Residents will only have access to their own tickets
+*	Staff members will only have access to tickets assigned to their department
+*	Only administrator(s) shall have access to all data and permission/ability to perform actions on user accounts (other than resident's ability to create their own accounts)
+*	Users will only have permissions appropriate to their classification
+*	Residents may only create their own accounts, create tickets for themselves, view/search/close their own tickets
+*	Staff members may only view/search/close tickets for their department
+*	Administrator(s) may perform all actions
 
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
